@@ -80,7 +80,6 @@ public class GameConfig : MonoBehaviour
             }
 
             Data = parsed;
-            Debug.Log("Doofus Diary loaded successfully. Speed: " + Data.player_data.speed);
         }
         catch (System.Exception e)
         {

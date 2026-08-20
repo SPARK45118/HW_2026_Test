@@ -5,6 +5,7 @@ public class DoofusController : MonoBehaviour
 {
     private GameConfig gameConfig;
     private GameManager gameManager;
+    private CameraFollow cameraFollow;
 
     [Header("Jump Settings")]
     public float jumpHeight = 2f;
@@ -13,7 +14,7 @@ public class DoofusController : MonoBehaviour
 
     [Header("Speed Tuning")]
     [Range(1f, 3f)]
-    public float speedMultiplier = 1.5f;
+    public float speedMultiplier = 2.0f;
 
     [Header("Ground Detection")]
     public LayerMask pulpitLayer;
@@ -26,12 +27,18 @@ public class DoofusController : MonoBehaviour
     private bool isFalling = false;
     private bool isGameOver = false;
 
+    [Header("Water Splash")]
+    public GameObject splashEffectPrefab;
+    public float waterY = -8f;
+    private bool splashTriggered = false;
+
     private bool gameStarted = false;
 
     private void Start()
     {
         gameConfig = FindAnyObjectByType<GameConfig>();
         gameManager = FindAnyObjectByType<GameManager>();
+        cameraFollow = FindAnyObjectByType<CameraFollow>();
     }
 
     public void SetGameStarted(bool started)
@@ -47,6 +54,7 @@ public class DoofusController : MonoBehaviour
         fallVelocity = 0f;
         isGameOver = false;
         isJumping = false;
+        splashTriggered = false;
         StopAllCoroutines();
     }
 
@@ -59,10 +67,18 @@ public class DoofusController : MonoBehaviour
             fallVelocity += gravity * Time.deltaTime;
             transform.position += Vector3.up * fallVelocity * Time.deltaTime;
 
-            if (transform.position.y < fallDeathY)
+            if (!splashTriggered && transform.position.y <= waterY)
             {
+                splashTriggered = true;
                 isGameOver = true;
-                gameManager.OnDoofusFell();
+
+                if (splashEffectPrefab != null)
+                {
+                    Vector3 splashPos = new Vector3(transform.position.x, waterY, transform.position.z);
+                    Instantiate(splashEffectPrefab, splashPos, Quaternion.identity);
+                }
+
+                StartCoroutine(DelayedGameOver());
             }
             return;
         }
@@ -101,6 +117,12 @@ public class DoofusController : MonoBehaviour
         if (grounded)
         {
             gameManager.OnDoofusLanded(hit.collider.gameObject);
+
+            if (isFalling && cameraFollow != null)
+            {
+                cameraFollow.TriggerShake();
+            }
+
             isFalling = false;
             fallVelocity = 0f;
         }
@@ -127,5 +149,11 @@ public class DoofusController : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, startY, transform.position.z);
         isJumping = false;
+    }
+
+    private IEnumerator DelayedGameOver()
+    {
+        yield return new WaitForSeconds(0.5f);
+        gameManager.OnDoofusFell();
     }
 }

@@ -126,6 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4eb062b9dc8a7a4eb75c9a8d96e1cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PulpitController
+  warningDuration: 1
+  warningColor: {r: 1, g: 0, b: 0, a: 1}
+  flashSpeed: 8
+  breakEffectPrefab: {fileID: 1098896058278346627, guid: b2339cf4f5ec2d84eaba2fc3965cb207, type: 3}
 --- !u!65 &2514026782328194899
 BoxCollider:
   m_ObjectHideFlags: 0

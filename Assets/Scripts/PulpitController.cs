@@ -10,11 +10,35 @@ public class PulpitController : MonoBehaviour
     private bool spawnTriggered = false;
     private bool isDestroying = false;
 
+    [Header("Warning Flash Settings")]
+    public float warningDuration = 1f;
+    public Color warningColor = Color.red;
+    public float flashSpeed = 8f;
+
+    [Header("Break Effect")]
+    public GameObject breakEffectPrefab;
+
+    private Renderer pulpitRenderer;
+    private MaterialPropertyBlock propBlock;
+    private Color originalColor;
+    private bool warningStarted = false;
+
     public void Initialize(float destroyTime, float spawnTriggerTime, GameManager manager)
     {
         this.destroyTime = destroyTime;
         this.spawnTriggerTime = spawnTriggerTime;
         this.gameManager = manager;
+    }
+
+    private void Awake()
+    {
+        pulpitRenderer = GetComponent<Renderer>();
+        propBlock = new MaterialPropertyBlock();
+
+        if (pulpitRenderer != null)
+        {
+            originalColor = pulpitRenderer.sharedMaterial.color;
+        }
     }
 
     private void Update()
@@ -27,6 +51,14 @@ public class PulpitController : MonoBehaviour
         {
             spawnTriggered = true;
             gameManager.OnPulpitSpawnTrigger(transform.position);
+        }
+
+        float timeRemaining = destroyTime - timer;
+
+        if (!warningStarted && timeRemaining <= warningDuration)
+        {
+            warningStarted = true;
+            StartCoroutine(WarningFlash(timeRemaining));
         }
 
         if (timer >= destroyTime)
@@ -45,8 +77,32 @@ public class PulpitController : MonoBehaviour
         }
     }
 
+    private IEnumerator WarningFlash(float duration)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < duration && !isDestroying)
+        {
+            elapsed += Time.deltaTime;
+
+            float pulse = (Mathf.Sin(elapsed * flashSpeed) + 1f) * 0.5f;
+            Color flashColor = Color.Lerp(originalColor, warningColor, pulse);
+
+            pulpitRenderer.GetPropertyBlock(propBlock);
+            propBlock.SetColor("_BaseColor", flashColor);
+            pulpitRenderer.SetPropertyBlock(propBlock);
+
+            yield return null;
+        }
+    }
+
     private IEnumerator AnimateDestroy()
     {
+        if (breakEffectPrefab != null)
+        {
+            Instantiate(breakEffectPrefab, transform.position, Quaternion.identity);
+        }
+
         float duration = 0.3f;
         float elapsed = 0f;
         Vector3 startScale = transform.localScale;
