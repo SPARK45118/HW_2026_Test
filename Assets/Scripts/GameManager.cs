@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,9 +22,16 @@ public class GameManager : MonoBehaviour
     public int score = 0;
 
     [Header("Game Over UI")]
-    public GameObject gameOverPanel;    // drag GameOverPanel here
-    public TMP_Text finalScoreText;     // drag FinalScoreText here
+    public GameObject gameOverPanel;
+    public TMP_Text finalScoreText;
     public bool isGameOver = false;
+
+    [Header("Start Screen UI")]
+    public GameObject startPanel;
+    private bool gameStarted = false;
+
+    private DoofusController doofusController;
+    private Vector3 doofusStartPosition;
 
     private static readonly Vector3[] Directions = new Vector3[]
     {
@@ -38,14 +44,35 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         gameConfig = FindAnyObjectByType<GameConfig>();
+        doofusController = FindAnyObjectByType<DoofusController>();
+
+        if (doofusController != null)
+        {
+            doofusStartPosition = doofusController.transform.position;
+        }
+
+        Time.timeScale = 0f;
+        gameStarted = false;
+
+        if (startPanel != null) startPanel.SetActive(true);
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+
+        UpdateScoreUI();
+    }
+
+    public void OnPlayButtonPressed()
+    {
+        gameStarted = true;
+        Time.timeScale = 1f;
+
+        if (startPanel != null) startPanel.SetActive(false);
+
         lastSpawnPosition = Vector3.zero;
         SpawnPulpit(lastSpawnPosition);
 
-        UpdateScoreUI();
-
-        if (gameOverPanel != null)
+        if (doofusController != null)
         {
-            gameOverPanel.SetActive(false);
+            doofusController.SetGameStarted(true);
         }
     }
 
@@ -71,7 +98,7 @@ public class GameManager : MonoBehaviour
 
     public void OnPulpitSpawnTrigger(Vector3 currentPosition)
     {
-        if (isGameOver) return;
+        if (!gameStarted || isGameOver) return;
 
         if (activePulpits.Count < 2)
         {
@@ -129,7 +156,7 @@ public class GameManager : MonoBehaviour
 
     public void OnDoofusLanded(GameObject pulpit)
     {
-        if (isGameOver) return;
+        if (!gameStarted || isGameOver) return;
 
         if (pulpit != currentPulpit)
         {
@@ -178,20 +205,39 @@ public class GameManager : MonoBehaviour
 
         isGameOver = true;
 
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(true);
-        }
-
-        if (finalScoreText != null)
-        {
-            finalScoreText.text = "Score: " + score;
-        }
+        if (gameOverPanel != null) gameOverPanel.SetActive(true);
+        if (finalScoreText != null) finalScoreText.text = "Score: " + score;
     }
 
     public void RestartGame()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
+        Time.timeScale = 1f;
+        isGameOver = false;
+        score = 0;
+
+        if (scoreText != null) scoreText.text = "0";
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (startPanel != null) startPanel.SetActive(false);
+
+        foreach (GameObject p in activePulpits)
+        {
+            if (p != null) Destroy(p);
+        }
+        activePulpits.Clear();
+        currentPulpit = null;
+
+        if (doofusController != null)
+        {
+            doofusController.ResetState(doofusStartPosition);
+        }
+
+        lastSpawnPosition = Vector3.zero;
+        SpawnPulpit(lastSpawnPosition);
+
+        gameStarted = true;
+        if (doofusController != null)
+        {
+            doofusController.SetGameStarted(true);
+        }
     }
 }
