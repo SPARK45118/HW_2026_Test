@@ -4,6 +4,7 @@ using UnityEngine;
 public class DoofusController : MonoBehaviour
 {
     private GameConfig gameConfig;
+    private GameManager gameManager;
 
     [Header("Jump Settings")]
     public float jumpHeight = 2f;
@@ -14,13 +15,40 @@ public class DoofusController : MonoBehaviour
     [Range(1f, 3f)]
     public float speedMultiplier = 1.5f;
 
+    [Header("Ground Detection")]
+    public LayerMask pulpitLayer;
+    public float raycastDistance = 2f;
+
+    [Header("Fall Settings")]
+    public float gravity = -20f;       // acceleration, negative = downward
+    public float fallDeathY = -10f;    // trigger game over once Doofus drops this far
+    private float fallVelocity = 0f;
+    private bool isFalling = false;
+    private bool isGameOver = false;
+
     private void Start()
     {
-        gameConfig = FindFirstObjectByType<GameConfig>();
+        gameConfig = FindAnyObjectByType<GameConfig>();
+        gameManager = FindAnyObjectByType<GameManager>();
     }
 
     private void Update()
     {
+        if (isGameOver) return;
+
+        if (isFalling)
+        {
+            fallVelocity += gravity * Time.deltaTime;
+            transform.position += Vector3.up * fallVelocity * Time.deltaTime;
+
+            if (transform.position.y < fallDeathY)
+            {
+                isGameOver = true;
+                gameManager.OnDoofusFell();
+            }
+            return; // skip normal movement/input while falling
+        }
+
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 movement = new Vector3(horizontal, 0f, vertical).normalized;
@@ -40,6 +68,27 @@ public class DoofusController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
         {
             StartCoroutine(Jump());
+        }
+
+        CheckCurrentPulpit();
+    }
+
+    private void CheckCurrentPulpit()
+    {
+        if (isJumping) return; // don't count as falling mid-jump
+
+        RaycastHit hit;
+        bool grounded = Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance, pulpitLayer);
+
+        if (grounded)
+        {
+            gameManager.OnDoofusLanded(hit.collider.gameObject);
+            isFalling = false;
+            fallVelocity = 0f;
+        }
+        else
+        {
+            isFalling = true;
         }
     }
 

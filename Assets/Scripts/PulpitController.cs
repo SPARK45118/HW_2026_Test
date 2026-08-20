@@ -32,8 +32,16 @@ public class PulpitController : MonoBehaviour
         if (timer >= destroyTime)
         {
             isDestroying = true;
-            gameManager.OnPulpitDestroyed(gameObject); // notify immediately, don't wait for animation
+            gameManager.OnPulpitDestroyed(gameObject);
             StartCoroutine(AnimateDestroy());
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Doofus"))
+        {
+            gameManager.OnDoofusLanded(gameObject);
         }
     }
 

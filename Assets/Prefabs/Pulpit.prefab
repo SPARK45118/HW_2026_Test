@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4059439733129271306}
   - component: {fileID: 125469477393786529}
   - component: {fileID: 2514026782328194899}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pulpit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
