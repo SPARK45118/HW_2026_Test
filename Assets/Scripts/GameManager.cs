@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour
     public GameObject startPanel;
     private bool gameStarted = false;
 
+    [Header("Music")]
+    public MusicController musicController;
+
     private DoofusController doofusController;
     private Vector3 doofusStartPosition;
 
@@ -66,6 +69,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
 
         if (startPanel != null) startPanel.SetActive(false);
+
+        if (musicController != null) musicController.PlayMusic();
 
         lastSpawnPosition = Vector3.zero;
         SpawnPulpit(lastSpawnPosition);
@@ -207,6 +212,8 @@ public class GameManager : MonoBehaviour
 
         if (gameOverPanel != null) gameOverPanel.SetActive(true);
         if (finalScoreText != null) finalScoreText.text = "Score: " + score;
+
+        if (musicController != null) musicController.StopMusic();
     }
 
     public void RestartGame()
@@ -218,6 +225,8 @@ public class GameManager : MonoBehaviour
         if (scoreText != null) scoreText.text = "0";
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (startPanel != null) startPanel.SetActive(false);
+
+        if (musicController != null) musicController.PlayMusic();
 
         foreach (GameObject p in activePulpits)
         {
