@@ -6,6 +6,14 @@ Guide **Doofus**, a wandering cube-headed pirate, across a chain of disappearing
 
 ---
 
+## 📖 The Story Behind the Build
+
+Instead of leaving Doofus on a plain, empty background, I built out a full narrative around the core mechanic: Doofus is a **pirate whose ship has wrecked**, and he's stranded out at sea. The only way back to safety is to make his way to the beach — where more ships, treasure, and palm trees await — by hopping across a trail of crumbling **Pulpits** that spawn two at a time, exactly per Hitwicket's original guideline (only two Pulpits active simultaneously, spawning adjacent to the previous one).
+
+So mechanically, nothing about the core rules changed — Doofus is still walking across a fixed number of platforms that spawn and disappear on a timer. But narratively, every design choice was made to answer *"why is this happening?"*: he's not just testing platforms, he's a shipwrecked pirate racing across a sinking archipelago to reach dry land before the sea swallows his path. That's the lens I used for every visual and environmental decision below.
+
+---
+
 ## 🎮 Gameplay Overview
 
 Doofus loves exploring green hex platforms called **Pulpits**. The catch: each Pulpit only lasts a few seconds before it crumbles and falls apart. Doofus has set himself a challenge — walk across at least **50 Pulpits** without falling into the water.
@@ -19,16 +27,16 @@ Doofus loves exploring green hex platforms called **Pulpits**. The catch: each P
 
 ## 🏝️ The Pirate Theme
 
-Instead of a plain, empty background, Doofus's platform-hopping challenge is set in a **pirate cove**:
+Instead of a plain, empty background, Doofus's platform-hopping challenge is set in a **pirate cove**, built to match his shipwreck story:
 
-- A **weathered pirate ship** rests beached on the sandy shore, its sails catching the wind.
+- A **weathered pirate ship** rests beached on the sandy shore — the destination Doofus is trying to reach, and a nod to the wreck he started from.
 - A cluster of **smaller rowboats** bob near the coastline.
 - **Palm trees, rocks, and drifting clouds** dress the island and skyline.
 - A **shark fin** occasionally cuts through the water — a subtle reminder of what's waiting below if Doofus falls!
 - The flat ocean plane was replaced with **tiled hex water and sand pieces**, matching the same hex-grid aesthetic as the Pulpits themselves, so the whole world feels like one consistent, hand-crafted island rather than a generic 3D scene.
 - Doofus himself wears a **pirate hat**, tying the whole "shipwrecked adventurer hopping between crumbling platforms" fantasy together.
 
-The goal was to take a simple mechanical prototype (a cube jumping between platforms) and give it a **story and setting** — Doofus isn't just testing platforms, he's a castaway pirate trying to make it across a treacherous, sinking archipelago.
+The goal was to take a simple mechanical prototype (a cube jumping between platforms) and give it a **story and setting** — Doofus isn't just testing platforms, he's a castaway pirate trying to make it across a treacherous, sinking archipelago to reach the beach and rebuild.
 
 ---
 
@@ -86,7 +94,7 @@ Doofus isn't just a walker — he's got a burst of pirate agility built in:
 - **Unity 6**
 - **TextMeshPro** for all UI and in-world text
 - **JSON (Doofus Diary)** for data-driven game tuning (speed, Pulpit destroy timing, spawn timing)
-- Free pirate-themed 3D asset pack for environment props (ship, boats, palm trees, rocks, characters)
+- Free pirate-themed 3D asset pack — [**Creatus Pirate Pack**](https://creatus.itch.io/creatus-pirate) via itch.io — used for the character models (Doofus's pirate skin), ship, boats, palm trees, rocks, and other environment props
 
 ---
 
