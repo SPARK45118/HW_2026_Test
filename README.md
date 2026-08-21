@@ -132,13 +132,17 @@ Doofus isn't just a walker — he's got a burst of pirate agility built in:
 
 ---
 
-## 🎥 Gameplay Video
+## 🎥 Gameplay Video & Playable Build
 
-- ▶️ **YouTube:** [https://www.youtube.com/watch?v=JdMK6nrhDw0](https://www.youtube.com/watch?v=JdMK6nrhDw0)
-- 📁 **Google Drive (full quality):** [https://drive.google.com/drive/folders/1tp7rQ_nv7XHOUZhWn35-y1l5nz_VjICg?usp=sharing](https://drive.google.com/drive/folders/1tp7rQ_nv7XHOUZhWn35-y1l5nz_VjICg?usp=sharing)
+- ▶️ **YouTube (gameplay video):** [https://www.youtube.com/watch?v=JdMK6nrhDw0](https://www.youtube.com/watch?v=JdMK6nrhDw0)
+- 📁 **Google Drive:** [https://drive.google.com/drive/folders/1tp7rQ_nv7XHOUZhWn35-y1l5nz_VjICg?usp=sharing](https://drive.google.com/drive/folders/1tp7rQ_nv7XHOUZhWn35-y1l5nz_VjICg?usp=sharing)
+
+  The Drive folder contains, in addition to the full-quality gameplay video:
+  - A **ready-to-run Windows build** of the game (Unity standalone `.exe`) — just download and run, no Unity installation needed.
+  - The **complete Unity project folder**, in case you'd prefer to open it directly in the Unity Editor to inspect the scene setup, prefabs, and configuration alongside the source code in this repo.
 
 ---
 
 ## 📂 Repo Notes
 
-Gameplay screenshots and video are included in this repository as required by the assignment guidelines.
+Gameplay screenshots, video, a playable Windows build, and the full Unity project are all provided (screenshots and video in this repository, build and full project via the Google Drive link above) as required by the assignment guidelines.y as required by the assignment guidelines.
