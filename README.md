@@ -145,4 +145,4 @@ Doofus isn't just a walker — he's got a burst of pirate agility built in:
 
 ## 📂 Repo Notes
 
-Gameplay screenshots, video, a playable Windows build, and the full Unity project are all provided (screenshots and video in this repository, build and full project via the Google Drive link above) as required by the assignment guidelines.y as required by the assignment guidelines.
+Gameplay screenshots, video, a playable Windows build, and the full Unity project are all provided (screenshots and video in this repository, build and full project via the Google Drive link above) as required by the assignment guidelines.
