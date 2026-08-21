@@ -16,6 +16,14 @@ public class DoofusController : MonoBehaviour
     [Range(1f, 3f)]
     public float speedMultiplier = 2.0f;
 
+    [Header("Dash Settings")]
+    public float dashSpeedMultiplier = 2.5f;
+    public float dashDuration = 0.3f;
+    public float dashCooldown = 3f;
+    private bool isDashing = false;
+    private float dashTimer = 0f;
+    private float dashCooldownTimer = 0f;
+
     [Header("Ground Detection")]
     public LayerMask pulpitLayer;
     public float raycastDistance = 2f;
@@ -55,6 +63,9 @@ public class DoofusController : MonoBehaviour
         isGameOver = false;
         isJumping = false;
         splashTriggered = false;
+        isDashing = false;
+        dashTimer = 0f;
+        dashCooldownTimer = 0f;
         StopAllCoroutines();
     }
 
@@ -83,6 +94,8 @@ public class DoofusController : MonoBehaviour
             return;
         }
 
+        UpdateDashTimers();
+
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 movement = new Vector3(horizontal, 0f, vertical).normalized;
@@ -92,7 +105,17 @@ public class DoofusController : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(movement);
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && dashCooldownTimer <= 0f && movement.magnitude > 0.1f)
+        {
+            StartDash();
+        }
+
         float effectiveSpeed = gameConfig.Data.player_data.speed * speedMultiplier;
+
+        if (isDashing)
+        {
+            effectiveSpeed *= dashSpeedMultiplier;
+        }
 
         transform.Translate(
             movement * effectiveSpeed * Time.deltaTime,
@@ -105,6 +128,37 @@ public class DoofusController : MonoBehaviour
         }
 
         CheckCurrentPulpit();
+    }
+
+    private void StartDash()
+    {
+        isDashing = true;
+        dashTimer = dashDuration;
+        dashCooldownTimer = dashCooldown;
+    }
+
+    private void UpdateDashTimers()
+    {
+        if (isDashing)
+        {
+            dashTimer -= Time.deltaTime;
+            if (dashTimer <= 0f)
+            {
+                isDashing = false;
+            }
+        }
+
+        if (dashCooldownTimer > 0f)
+        {
+            dashCooldownTimer -= Time.deltaTime;
+        }
+    }
+
+    // Optional: expose cooldown progress (0 = ready, 1 = just used) for a UI cooldown indicator
+    public float GetDashCooldownProgress()
+    {
+        if (dashCooldown <= 0f) return 0f;
+        return Mathf.Clamp01(dashCooldownTimer / dashCooldown);
     }
 
     private void CheckCurrentPulpit()

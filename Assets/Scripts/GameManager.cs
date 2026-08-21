@@ -21,6 +21,12 @@ public class GameManager : MonoBehaviour
     private GameObject currentPulpit;
     public int score = 0;
 
+    [Header("Challenge Complete UI")]
+    public GameObject challengeCompletePanel;
+    public TMP_Text challengeCompleteText;
+    public int challengeTargetScore = 50;
+    private bool challengeCompleteShown = false;
+
     [Header("Game Over UI")]
     public GameObject gameOverPanel;
     public TMP_Text finalScoreText;
@@ -59,6 +65,7 @@ public class GameManager : MonoBehaviour
 
         if (startPanel != null) startPanel.SetActive(true);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (challengeCompletePanel != null) challengeCompletePanel.SetActive(false);
 
         UpdateScoreUI();
     }
@@ -168,7 +175,80 @@ public class GameManager : MonoBehaviour
             currentPulpit = pulpit;
             score++;
             UpdateScoreUI();
+            CheckChallengeComplete();
         }
+    }
+
+    private void CheckChallengeComplete()
+    {
+        if (challengeCompleteShown) return;
+
+        if (score >= challengeTargetScore)
+        {
+            challengeCompleteShown = true;
+
+            if (challengeCompleteText != null)
+            {
+                challengeCompleteText.text = "Hi Hitwicket Team!\nChallenge Complete - " + challengeTargetScore + " Pulpits Reached!";
+            }
+
+            if (challengeCompletePanel != null)
+            {
+                StartCoroutine(AnimateChallengePanel());
+            }
+        }
+    }
+
+    private IEnumerator AnimateChallengePanel()
+    {
+        challengeCompletePanel.SetActive(true);
+
+        RectTransform rt = challengeCompletePanel.GetComponent<RectTransform>();
+        CanvasGroup cg = challengeCompletePanel.GetComponent<CanvasGroup>();
+        if (cg == null) cg = challengeCompletePanel.AddComponent<CanvasGroup>();
+
+        Vector2 offScreenPos = new Vector2(-400f, rt.anchoredPosition.y);
+        Vector2 onScreenPos = rt.anchoredPosition;
+
+        // Slide + fade in with a slight scale pop
+        rt.anchoredPosition = offScreenPos;
+        cg.alpha = 0f;
+        rt.localScale = Vector3.one * 0.8f;
+
+        float duration = 0.35f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            float eased = 1f - Mathf.Pow(1f - t, 3f); // ease-out cubic
+
+            rt.anchoredPosition = Vector2.Lerp(offScreenPos, onScreenPos, eased);
+            cg.alpha = Mathf.Lerp(0f, 1f, eased);
+            rt.localScale = Vector3.one * Mathf.Lerp(0.8f, 1f, eased);
+
+            yield return null;
+        }
+
+        rt.anchoredPosition = onScreenPos;
+        cg.alpha = 1f;
+        rt.localScale = Vector3.one;
+
+        yield return new WaitForSeconds(6f);
+
+        // Fade out
+        elapsed = 0f;
+        float fadeDuration = 0.3f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        cg.alpha = 0f;
+        challengeCompletePanel.SetActive(false);
     }
 
     private void UpdateScoreUI()
@@ -221,10 +301,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         isGameOver = false;
         score = 0;
+        challengeCompleteShown = false;
 
         if (scoreText != null) scoreText.text = "0";
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (startPanel != null) startPanel.SetActive(false);
+        if (challengeCompletePanel != null) challengeCompletePanel.SetActive(false);
 
         if (musicController != null) musicController.PlayMusic();
 
@@ -242,11 +324,5 @@ public class GameManager : MonoBehaviour
 
         lastSpawnPosition = Vector3.zero;
         SpawnPulpit(lastSpawnPosition);
-
-        gameStarted = true;
-        if (doofusController != null)
-        {
-            doofusController.SetGameStarted(true);
-        }
     }
 }
