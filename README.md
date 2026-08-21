@@ -66,6 +66,19 @@ The goal was to take a simple mechanical prototype (a cube jumping between platf
 
 ---
 
+## 💡 Design Decisions Beyond the Spec
+
+The original assignment describes Pulpits spawning **adjacent** to the previous one — this is the baseline the spec asks for. I extended this myself: Pulpits sometimes spawn with a **randomized gap** instead of sitting flush against each other, which a simple walk can't cross in time.
+
+To make that possible (and interesting, not just harder), I added two systems the assignment doesn't ask for:
+
+- **Jump** (Space) — a fixed arc jump to clear a Pulpit's edge.
+- **Dash** (Left Shift) — a short speed burst with a cooldown, specifically useful for closing wider gaps that jumping alone can't cover.
+
+This wasn't something stated in the brief — it came out of noticing that "adjacent, not overlapping" placement, taken literally, makes for fairly flat/passive movement, so I built in a small risk/reward layer: gaps are optional and random, but crossing one successfully still counts as a normal Pulpit landing for scoring. The core spawn/timer/scoring logic itself is untouched from the assignment's rules.
+
+---
+
 ## ⚡ Doofus's Dash Ability
 
 Doofus isn't just a walker — he's got a burst of pirate agility built in:
