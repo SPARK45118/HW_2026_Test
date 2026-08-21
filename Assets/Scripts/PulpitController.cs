@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class PulpitController : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class PulpitController : MonoBehaviour
 
     [Header("Spawn Animation")]
     public float spawnAnimDuration = 0.3f;
+
+    [Header("Timer Display")]
+    public TMP_Text timerText;
 
     private Renderer pulpitRenderer;
     private MaterialPropertyBlock propBlock;
@@ -77,6 +81,11 @@ public class PulpitController : MonoBehaviour
         }
 
         float timeRemaining = destroyTime - timer;
+
+        if (timerText != null)
+        {
+            timerText.text = Mathf.Max(0f, timeRemaining).ToString("F2");
+        }
 
         if (!warningStarted && timeRemaining <= warningDuration)
         {
