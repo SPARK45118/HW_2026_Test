@@ -53,6 +53,7 @@ The goal was to take a simple mechanical prototype (a cube jumping between platf
 - **Dash ability** — hold a direction and tap **Left Shift** to burst forward at increased speed for a short duration, with a cooldown before it can be used again.
 - **50-Pulpit Challenge Complete banner** — a custom animated (slide-in, scale-pop, fade-out) UI message celebrating the in-brief goal of reaching 50 Pulpits.
 - Full **pirate cove environment**: beached ship, rowboats, palm trees, rocks, clouds, shark, and a custom hex-tiled shoreline replacing the default ocean plane.
+- **Background music** that plays during active gameplay and stops on Game Over.
 - Third-person follow camera with a subtle **shake effect** on landing after a fall.
 
 ---
@@ -85,10 +86,38 @@ Doofus isn't just a walker — he's got a burst of pirate agility built in:
 - **Unity 6**
 - **TextMeshPro** for all UI and in-world text
 - **JSON (Doofus Diary)** for data-driven game tuning (speed, Pulpit destroy timing, spawn timing)
-- Free pirate-themed 3D asset pack for environment props (ship, boats, palm trees, rocks)
+- Free pirate-themed 3D asset pack for environment props (ship, boats, palm trees, rocks, characters)
+
+---
+
+## 📸 Gameplay Screenshots
+
+<p align="center">
+  <img src="Doofus Adventure GamePlay Screenshots/Screenshot 2026-08-21 153018.png" width="410" />
+  <img src="Doofus Adventure GamePlay Screenshots/Screenshot 2026-08-21 153029.png" width="410" />
+</p>
+<p align="center">
+  <img src="Doofus Adventure GamePlay Screenshots/Screenshot 2026-08-21 153629.png" width="410" />
+  <img src="Doofus Adventure GamePlay Screenshots/Screenshot 2026-08-21 153742.png" width="410" />
+</p>
+<p align="center">
+  <img src="Doofus Adventure GamePlay Screenshots/Screenshot 2026-08-21 153750.png" width="410" />
+  <img src="Doofus Adventure GamePlay Screenshots/Screenshot 2026-08-21 154008.png" width="410" />
+</p>
+<p align="center">
+  <img src="Doofus Adventure GamePlay Screenshots/Screenshot 2026-08-21 154016.png" width="410" />
+  <img src="Doofus Adventure GamePlay Screenshots/Screenshot 2026-08-21 154033.png" width="410" />
+</p>
+
+---
+
+## 🎥 Gameplay Video
+
+- ▶️ **YouTube:** [https://www.youtube.com/watch?v=JdMK6nrhDw0](https://www.youtube.com/watch?v=JdMK6nrhDw0)
+- 📁 **Google Drive (full quality):** [https://drive.google.com/drive/folders/1tp7rQ_nv7XHOUZhWn35-y1l5nz_VjICg?usp=sharing](https://drive.google.com/drive/folders/1tp7rQ_nv7XHOUZhWn35-y1l5nz_VjICg?usp=sharing)
 
 ---
 
 ## 📂 Repo Notes
 
-Gameplay screenshots/video are included in this repository as required by the assignment guidelines.
+Gameplay screenshots and video are included in this repository as required by the assignment guidelines.
