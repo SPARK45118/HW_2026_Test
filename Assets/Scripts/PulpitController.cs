@@ -18,10 +18,14 @@ public class PulpitController : MonoBehaviour
     [Header("Break Effect")]
     public GameObject breakEffectPrefab;
 
+    [Header("Spawn Animation")]
+    public float spawnAnimDuration = 0.3f;
+
     private Renderer pulpitRenderer;
     private MaterialPropertyBlock propBlock;
     private Color originalColor;
     private bool warningStarted = false;
+    private Vector3 fullScale;
 
     public void Initialize(float destroyTime, float spawnTriggerTime, GameManager manager)
     {
@@ -39,6 +43,25 @@ public class PulpitController : MonoBehaviour
         {
             originalColor = pulpitRenderer.sharedMaterial.color;
         }
+
+        fullScale = transform.localScale;
+        transform.localScale = Vector3.zero;
+        StartCoroutine(SpawnAnimation());
+    }
+
+    private IEnumerator SpawnAnimation()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < spawnAnimDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / spawnAnimDuration;
+            transform.localScale = Vector3.Lerp(Vector3.zero, fullScale, t);
+            yield return null;
+        }
+
+        transform.localScale = fullScale;
     }
 
     private void Update()
